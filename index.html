@@ -269,6 +269,7 @@
     #countdown{text-align:left;}
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -617,26 +618,16 @@
 </footer>
 </div>
 
-<script type="module">
+<script>
+(function(){
   // ============================================================
-  // CONFIGURAÇÃO DO FIREBASE — cole aqui as credenciais do SEU
-  // projeto (Firebase Console > Configurações do projeto > seus apps > SDK).
+  // CONFIGURAÇÃO DO SUPABASE — cole aqui a URL e a chave "anon"
+  // do SEU projeto (Supabase > Settings > API).
   // ============================================================
-  const firebaseConfig = {
-  apiKey: "AIzaSyDTNVjeLxThKew_1SbOGY5_ivPD5GRJhlg",
-  authDomain: "checklist-documentos-ip-2026.firebaseapp.com",
-  projectId: "checklist-documentos-ip-2026",
-  storageBucket: "checklist-documentos-ip-2026.firebasestorage.app",
-  messagingSenderId: "967588200820",
-  appId: "1:967588200820:web:e9cf9e6079dc06deccec21",
-  measurementId: "G-KNJWV19LB2"
-};
+  const SUPABASE_URL = "COLE_AQUI_A_URL_DO_PROJETO";
+  const SUPABASE_ANON_KEY = "COLE_AQUI_A_CHAVE_ANON_PUBLIC";
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   const items = Array.from(document.querySelectorAll('.item'));
   const fill = document.getElementById('progressFill');
@@ -655,7 +646,7 @@
 
   function onlyDigits(v){ return (v || '').replace(/\D/g, ''); }
 
-  function docId(inscricao, cpf){
+  function recordId(inscricao, cpf){
     return inscricao + '_' + cpf;
   }
 
@@ -685,23 +676,28 @@
 
   async function loadProgress(inscricao, cpf){
     try{
-      const ref = doc(db, 'progresso', docId(inscricao, cpf));
-      const snap = await getDoc(ref);
-      if(!snap.exists()) return {};
-      const data = snap.data();
-      return data.items || {};
+      const { data, error } = await supabaseClient
+        .from('progresso')
+        .select('items')
+        .eq('id', recordId(inscricao, cpf))
+        .maybeSingle();
+      if(error){ console.error('Erro ao carregar progresso:', error); return {}; }
+      return (data && data.items) ? data.items : {};
     }catch(e){ console.error('Erro ao carregar progresso:', e); return {}; }
   }
 
   async function saveProgress(){
     if(!currentInscricao) return;
     try{
-      const ref = doc(db, 'progresso', docId(currentInscricao, currentCpf));
-      await setDoc(ref, {
-        inscricao: currentInscricao,
-        items: currentState,
-        updatedAt: new Date().toISOString()
-      });
+      const { error } = await supabaseClient
+        .from('progresso')
+        .upsert({
+          id: recordId(currentInscricao, currentCpf),
+          inscricao: currentInscricao,
+          items: currentState,
+          updated_at: new Date().toISOString()
+        });
+      if(error){ console.error('Erro ao salvar progresso:', error); return; }
       flashSaved();
     }catch(e){ console.error('Erro ao salvar progresso:', e); }
   }
@@ -833,6 +829,7 @@
       await enterApp(session.inscricao, session.cpf);
     }
   })();
+})();
 </script>
 
 </body>
