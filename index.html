@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Convocação — Investigador de Polícia | Checklist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --bg:#0b0d10;
+    --bg-2:#14181d;
+    --surface:#1a1f26;
+    --surface-2:#20262e;
+    --ink:#e9e7e1;
+    --ink-soft:#9aa4ad;
+    --ink-faint:#6b747c;
+    --red:#7f1d24;
+    --red-light:#b5424a;
+    --gold:#b8963e;
+    --gold-light:#d9bb70;
+    --line:#2a3038;
+    --line-light:#343b45;
+    --green:#3f7a54;
+    --green-light:#5c9e73;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(233,231,225,0.035) 1px, transparent 0);
+    background-size:24px 24px;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{max-width:760px; margin:0 auto; padding:0 22px 120px; position:relative; z-index:1;}
+  a{color:var(--gold-light);}
+
+  /* ================= LOGIN GATE ================= */
+  #loginGate{
+    position:fixed; inset:0; z-index:100;
+    background:radial-gradient(ellipse at 50% -10%, #1c232b 0%, var(--bg) 60%);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+  }
+  .login-card{
+    width:100%; max-width:400px;
+    background:var(--surface);
+    border:1px solid var(--line-light);
+    border-radius:8px;
+    padding:36px 30px 30px;
+    position:relative;
+    box-shadow:0 30px 60px rgba(0,0,0,0.5);
+  }
+  .login-card::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--red), var(--gold), var(--red));
+    border-radius:8px 8px 0 0;
+  }
+  .badge-mark{
+    width:52px; height:52px; margin:0 auto 18px;
+    border:2px solid var(--gold);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .badge-mark::after{
+    content:"";
+    width:22px; height:22px;
+    border:2px solid var(--gold);
+    transform:rotate(45deg);
+  }
+  .login-card h2{
+    font-family:'Source Serif 4', serif;
+    font-size:22px; font-weight:600;
+    text-align:center; color:var(--ink);
+    margin-bottom:6px;
+  }
+  .login-sub{
+    text-align:center; color:var(--ink-soft); font-size:13px; margin-bottom:26px;
+  }
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block; font-size:11.5px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--gold-light); margin-bottom:6px; font-family:'IBM Plex Mono',monospace;
+  }
+  .field input{
+    width:100%; background:var(--bg-2); border:1px solid var(--line-light);
+    color:var(--ink); font-size:15px; padding:11px 13px; border-radius:5px;
+    font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em;
+  }
+  .field input:focus{outline:none; border-color:var(--gold); background:#171c22;}
+  .field input::placeholder{color:var(--ink-faint);}
+  .login-error{
+    color:var(--red-light); font-size:12.5px; margin:-6px 0 14px; min-height:1px;
+  }
+  .login-btn{
+    width:100%; background:var(--red); color:#f2e9e6; border:1px solid var(--red-light);
+    font-family:'IBM Plex Sans',sans-serif; font-weight:600; font-size:14.5px;
+    padding:13px; border-radius:5px; cursor:pointer; letter-spacing:0.02em;
+    transition:background .15s;
+  }
+  .login-btn:hover{background:#912129;}
+  .login-note{
+    margin-top:16px; font-size:11.5px; color:var(--ink-faint); text-align:center; line-height:1.5;
+  }
+
+  /* ================= HEADER ================= */
+  header.top{
+    background:linear-gradient(180deg, #14181d, #0f1216);
+    color:var(--ink);
+    padding:36px 22px 30px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  header.top::after{
+    content:"";
+    position:absolute; right:-60px; top:-60px;
+    width:220px; height:220px; border-radius:50%;
+    border:1px dashed rgba(184,150,62,0.25);
+  }
+  header.top .inner{max-width:760px; margin:0 auto; position:relative;}
+  h1{
+    font-family:'Source Serif 4', serif;
+    font-weight:700;
+    font-size:clamp(26px,5.4vw,38px);
+    line-height:1.14;
+    letter-spacing:-0.01em;
+    max-width:14ch;
+    color:var(--ink);
+  }
+  .sub{
+    margin-top:12px; color:var(--ink-soft); font-size:14.5px; max-width:48ch;
+  }
+  .prazo-box{
+    margin-top:24px; background:rgba(184,150,62,0.06);
+    border:1px solid rgba(184,150,62,0.3);
+    border-radius:4px; padding:16px 18px;
+    display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .prazo-box .label{font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-light); font-family:'IBM Plex Mono',monospace;}
+  .prazo-box .dates{font-family:'Source Serif 4', serif; font-size:19px; font-weight:600; margin-top:3px; color:var(--ink);}
+  #countdown{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--gold-light); text-align:right;}
+  #countdown strong{display:block; font-size:22px; color:var(--ink); font-weight:600;}
+
+  .user-bar{
+    margin-top:20px; display:flex; justify-content:space-between; align-items:center;
+    padding-top:16px; border-top:1px solid var(--line); flex-wrap:wrap; gap:8px;
+  }
+  .user-info{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft);}
+  .user-info strong{color:var(--gold-light);}
+  .logout-btn{
+    background:none; border:1px solid var(--line-light); color:var(--ink-soft);
+    padding:6px 13px; border-radius:20px; font-size:11.5px; cursor:pointer;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .logout-btn:hover{border-color:var(--red-light); color:var(--red-light);}
+
+  /* ================= PROGRESS ================= */
+  .progress-shell{
+    position:sticky; top:0; z-index:10;
+    background:var(--bg); border-bottom:1px solid var(--line);
+    padding:12px 22px;
+  }
+  .progress-inner{max-width:760px; margin:0 auto; display:flex; align-items:center; gap:14px;}
+  .progress-track{flex:1; height:8px; background:var(--surface); border-radius:4px; overflow:hidden; border:1px solid var(--line-light);}
+  .progress-fill{height:100%; background:linear-gradient(90deg, var(--red), var(--gold)); width:0%; transition:width .35s ease;}
+  .progress-text{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); white-space:nowrap;}
+  .save-indicator{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--green-light); white-space:nowrap; opacity:0; transition:opacity .3s;}
+  .save-indicator.show{opacity:1;}
+
+  /* ================= SECTIONS ================= */
+  main{padding-top:34px;}
+  section{margin-bottom:44px;}
+
+  .sec-head{display:flex; align-items:baseline; gap:12px; margin-bottom:6px;}
+  .sec-num{font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--gold); font-weight:600;}
+  .sec-title{font-family:'Source Serif 4', serif; font-weight:600; font-size:21px; color:var(--ink);}
+  .sec-desc{color:var(--ink-soft); font-size:14.5px; margin:8px 0 16px; max-width:60ch;}
+  .sec-rule{height:1px; background:var(--line); margin:0 0 20px;}
+
+  .note{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:3px solid var(--gold);
+    border-radius:3px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--ink-soft);
+    margin-bottom:14px;
+  }
+  .note strong{color:var(--ink);}
+  .note a{color:var(--gold-light); font-weight:600; text-decoration:none; border-bottom:1px solid rgba(217,187,112,0.4); word-break:break-all;}
+  .note a:hover{color:var(--red-light);}
+  .note.alert{border-left-color:var(--red-light);}
+  .note.alert strong{color:var(--red-light);}
+  .note.address{border-left-color:var(--ink-faint);}
+
+  .item{
+    display:flex; gap:14px; align-items:flex-start;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:14px 16px;
+    margin-bottom:10px;
+    transition:border-color .2s, background .2s;
+  }
+  .item:hover{border-color:var(--gold);}
+  .item.checked{background:#161d19; border-color:var(--green);}
+  .item.checked .item-label{color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--green-light); text-decoration-thickness:1.5px;}
+
+  .checkbox{
+    flex:0 0 auto; width:22px; height:22px; margin-top:1px;
+    border:2px solid var(--ink-faint); border-radius:4px;
+    cursor:pointer; position:relative; background:var(--bg-2);
+    transition:background .15s, border-color .15s;
+  }
+  .item.checked .checkbox{background:var(--green); border-color:var(--green);}
+  .checkbox svg{position:absolute; inset:0; margin:auto; width:14px; height:14px; opacity:0; transition:opacity .12s;}
+  .item.checked .checkbox svg{opacity:1;}
+
+  .item-body{flex:1;}
+  .item-label{font-size:14.5px; color:var(--ink); font-weight:500;}
+  .item-note{font-size:13px; color:var(--ink-soft); margin-top:5px;}
+  .item-note a{color:var(--gold-light); text-decoration:none; border-bottom:1px solid rgba(217,187,112,0.4); word-break:break-all;}
+  .item-note a:hover{color:var(--red-light);}
+  .tag{
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.05em;
+    text-transform:uppercase; padding:2px 7px; border-radius:20px; margin-right:6px; margin-bottom:4px;
+    background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line-light);
+  }
+  .tag.cond{background:rgba(127,29,36,0.25); color:var(--red-light); border-color:rgba(181,66,74,0.4);}
+
+  details{margin-top:8px;}
+  details summary{cursor:pointer; font-size:12.5px; color:var(--gold-light); font-weight:600; list-style:none;}
+  details summary::-webkit-details-marker{display:none;}
+  details summary::before{content:"+ "; }
+  details[open] summary::before{content:"– ";}
+  details .item-note{margin-top:8px; padding-left:2px;}
+
+  footer{
+    text-align:center; padding:40px 22px 0; color:var(--ink-faint); font-size:12.5px;
+    border-top:1px solid var(--line); margin-top:20px;
+  }
+  footer .reset-btn{
+    margin-top:14px; background:none; border:1px solid var(--line-light); color:var(--ink-soft);
+    padding:8px 16px; border-radius:20px; font-family:'IBM Plex Mono',monospace; font-size:11.5px;
+    cursor:pointer;
+  }
+  footer .reset-btn:hover{border-color:var(--red-light); color:var(--red-light);}
+
+  @media (max-width:480px){
+    .prazo-box{flex-direction:column; align-items:flex-start;}
+    #countdown{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN GATE ================= -->
+<div id="loginGate">
+  <div class="login-card">
+    <div class="badge-mark"></div>
+    <h2>Acesso ao checklist</h2>
+    <p class="login-sub">Identifique-se para carregar ou salvar seu progresso</p>
+
+    <div class="field">
+      <label for="inscricao">Número de inscrição</label>
+      <input id="inscricao" type="text" placeholder="Ex: 000123456" inputmode="numeric" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="cpf">CPF</label>
+      <input id="cpf" type="text" placeholder="Apenas números" inputmode="numeric" autocomplete="off" maxlength="14">
+    </div>
+    <div class="login-error" id="loginError"></div>
+    <button class="login-btn" id="loginBtn">Entrar</button>
+    <p class="login-note">Seus dados ficam salvos apenas para identificar seu progresso individual neste checklist — não substituem nenhum cadastro oficial.</p>
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<header class="top">
+  <div class="inner">
+    <h1>Convocação para posse — Investigador de Polícia</h1>
+    <p class="sub">Checklist de acompanhamento das exigências documentais, declarações e exames para o cadastramento no Sistema GPI.</p>
+    <div class="prazo-box">
+      <div>
+        <div class="label">Prazo no Sistema GPI</div>
+        <div class="dates">03 a 13 de julho de 2026</div>
+      </div>
+      <div id="countdown">prazo final<strong>—</strong></div>
+    </div>
+    <div class="user-bar">
+      <div class="user-info">Inscrição <strong id="userInscricaoLabel">—</strong></div>
+      <button class="logout-btn" id="logoutBtn">Sair</button>
+    </div>
+  </div>
+</header>
+
+<div class="progress-shell">
+  <div class="progress-inner">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">0 / 0 concluídos</div>
+    <div class="save-indicator" id="saveIndicator">salvo</div>
+  </div>
+</div>
+
+<div class="wrap">
+<main>
+
+  <!-- I — LOCAL -->
+  <section>
+    <div class="sec-head"><span class="sec-num">I</span><span class="sec-title">Local de comparecimento</span></div>
+    <div class="sec-rule"></div>
+    <div class="note address">
+      <strong>Perícia de aptidão física:</strong> Divisão de Prevenção e Apoio Assistencial do DAP — Edifício Garagem Alfredo Issa, Praça Alfredo Issa, 71 – Térreo, Bairro da Santa Ifigênia, São Paulo – Capital. Comparecimento na ordem do Anexo I do Comunicado.
+    </div>
+    <div class="note">
+      A perícia médica só ocorre <strong>após</strong> a conferência prévia (remota) dos documentos no Sistema GPI — não é necessário comparecer ao setor apenas para entrega de documentos.
+    </div>
+  </section>
+
+  <!-- II — CADASTRO GPI -->
+  <section>
+    <div class="sec-head"><span class="sec-num">II</span><span class="sec-title">Cadastramento eletrônico — Sistema GPI</span></div>
+    <p class="sec-desc">Até 13/07/2026, acessar o sistema e completar as etapas abaixo.</p>
+    <div class="sec-rule"></div>
+
+    <div class="note">
+      Acesso ao sistema: <a href="http://200.144.31.39:9090/login.php" target="_blank" rel="noopener">http://200.144.31.39:9090/login.php</a>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">Inserir e/ou atualizar dados pessoais no GPI</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">Digitalizar e inserir os documentos exigidos (Item III)</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">Preencher, assinar, digitalizar e inserir as declarações exigidas (Item III)</div>
+        <div class="item-note">Modelos disponíveis no próprio Sistema GPI.</div>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">Digitalizar e inserir fotografia recente 3x4</div>
+        <div class="item-note">Posição frontal, rosto totalmente visível — sem óculos escuros, chapéu, boné, máscara ou faixas/laços que escondam rosto ou pescoço. Homens: preferencialmente paletó e gravata; mulheres: traje compatível.</div>
+      </div>
+    </div>
+
+    <div class="note alert">
+      Os <strong>exames médicos</strong> não são digitalizados no sistema pelo candidato — devem ser entregues fisicamente no dia da perícia de aptidão física (ver seção IV).
+    </div>
+  </section>
+
+  <!-- III — DOCUMENTOS -->
+  <section>
+    <div class="sec-head"><span class="sec-num">III-a</span><span class="sec-title">Documentos obrigatórios</span></div>
+    <p class="sec-desc">Inserir no Sistema GPI até 13/07/2026.</p>
+    <div class="sec-rule"></div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">a) Certidão de nascimento ou casamento (conforme estado civil), com averbações se houver</div>
+        <div class="item-note">União estável: pode anexar comprovante, mas isso não substitui a certidão. Naturalizado: anexar também o Certificado de Naturalização.</div>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><span class="tag cond">Sexo masculino</span>
+        <div class="item-label">b) Comprovante de situação militar (certificado de reservista, CDI, etc.)</div>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">c) Título de eleitor</div>
+        <div class="item-note">Conferir se zona/seção conferem com a Certidão de Quitação Eleitoral.</div>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">c.1) Certidão de quitação eleitoral (data posterior à convocação)</div>
+        <div class="item-note">Emitir em <a href="http://www.tse.jus.br" target="_blank" rel="noopener">www.tse.jus.br</a> ou em cartório eleitoral. Se houver pendência, regularizar antes de anexar.</div>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">d) Carteira de identidade (RG / CIN)</div>
+        <details>
+          <summary>Ver regras de preenchimento</summary>
+          <div class="item-note">
+            <strong>RG:</strong> número sem traços/pontos e sem letras; dígito em campo próprio; UF correta; órgão emissor no formato "SSP/MG"; data de emissão correta.<br><br>
+            <strong>CIN:</strong> número completo do CPF incluindo dígito; no campo "dígito" preencher "0" (não deixar em branco); UF correta; órgão emissor no formato "SSP/MG"; data de emissão correta.
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">e) CPF (documento com o número)</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">f) Comprovante de inscrição PIS ou PASEP</div>
+        <div class="item-note">PIS: apenas iniciativa privada. PASEP: já atuou no serviço público. Não apresentar comprovantes só com NIT/NIS — nesse caso, preencher declaração de não inscrição (modelo no GPI). PIS: agência Caixa Econômica Federal · PASEP: agência Banco do Brasil.</div>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">g) Comprovante da data do primeiro emprego</div>
+        <div class="item-note">Carteira de trabalho (página civil + primeiro emprego), carteira digital, rescisão contratual, ou — se setor público — cópia da nomeação/declaração de ingresso. Se nunca teve registro (inclusive autônomos), preencher declaração negativa (modelo no GPI).</div>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">h) Comprovante de residência recente com CEP</div>
+        <div class="item-note">Se não estiver em nome próprio, anexar também declaração informando o fato.</div>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">i) CNH válida (pré-requisito do cargo)</div><div class="item-note">Pode ser a CNH digital.</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">j) Declaração de Imposto de Renda 2026 (ano-base 2025) + recibo de entrega</div>
+        <div class="item-note">Se isento: Declaração de Isenção junto à Receita Federal + comprovante de regularidade do CPF em <a href="https://servicos.receita.fazenda.gov.br/Servicos/CPF/ConsultaSituacao/ConsultaPublica.asp" target="_blank" rel="noopener">servicos.receita.fazenda.gov.br</a> (anexar em campo próprio, não no campo de IR).</div>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">k) Diploma de graduação (frente e verso) ou Certificado de Colação de Grau</div>
+        <div class="item-note">Certificado de Colação só vale para recém-formados (a partir de 2024) sem diploma expedido — anexar também declaração da instituição com a previsão de expedição. Não vale "Curso Superior de Formação Específica" (curso sequencial). Diplomas digitais só são aceitos com códigos verificadores originais, não em xerox.</div>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">l) Atestado de antecedentes criminais (todos os estados de residência nos últimos 5 anos)</div>
+        <div class="item-note">Data posterior à publicação da convocação. É o Atestado da Secretaria de Segurança Pública — não confundir com Certidão do Poder Judiciário. São Paulo: emitir em <a href="https://www2.ssp.sp.gov.br/aacweb/carrega-iframe" target="_blank" rel="noopener">ssp.sp.gov.br</a> ou no Poupatempo. Os dados devem conferir com o RG anexado.</div>
+      </div>
+    </div>
+
+    <div class="note alert">
+      Não serão aceitos protocolos. Documentos digitais só valem no original — nunca em cópia xerox. Arquivos ilegíveis serão considerados pendência. Não anexar folhas em branco: se não tiver o documento, deixe o campo vazio.
+    </div>
+  </section>
+
+  <!-- III-b DECLARAÇÕES -->
+  <section>
+    <div class="sec-head"><span class="sec-num">III-b</span><span class="sec-title">Declarações obrigatórias</span></div>
+    <p class="sec-desc">Preencher, assinar e datar os originais. As 2.1 a 2.5 são obrigatórias para todos; as demais conforme a situação.</p>
+    <div class="sec-rule"></div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">2.1 — Ciência sobre proibição de outras atividades remuneradas (art. 44 da LC 207/79)</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body">
+        <div class="item-label">2.2 — Termo de ciência TCE + cadastro no CadTCESP</div>
+        <div class="item-note">Cadastro inicial em <a href="https://sso.tce.sp.gov.br/cas-server/login?service=https%3A%2F%2Fsso.tce.sp.gov.br%2FPortal/j_spring_cas_security_check" target="_blank" rel="noopener">sso.tce.sp.gov.br</a> (manual: <a href="https://sso.tce.sp.gov.br/Portal/manual/PRIMEIRO_ACESSO.pdf" target="_blank" rel="noopener">PRIMEIRO_ACESSO.pdf</a>). Depois, acessar o sistema "CadTCESP" e emitir a Declaração de Atualização Cadastral — escanear junto com este Termo.</div>
+      </div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">2.3 — Declaração sobre proventos de inatividade (aposentadoria)</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">2.4 — Declaração de bens e valores patrimoniais</div><div class="item-note">Obrigatória mesmo para isentos; se não possuir bens, informar isso na própria declaração.</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">2.5 — Declaração de acúmulo (ou não) de cargo/função pública</div><div class="item-note">Preencher conforme a situação na data do preenchimento. Se acumular mais de 1 cargo público, preencher 2 vias.</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><span class="tag cond">Se isento de IR</span><div class="item-label">2.6 — Declaração de isenção junto à Receita Federal</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><span class="tag cond">Sem PIS/PASEP</span><div class="item-label">2.7 — Declaração negativa de inscrição no PIS/PASEP</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><span class="tag cond">Policial civil SP</span><div class="item-label">2.8 — Requerimento de exoneração de cargo policial</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><span class="tag cond">Outro cargo público</span><div class="item-label">2.9 — Declaração de compromisso de exoneração para fins de posse</div><div class="item-note">Na posse, apresentar cópia do protocolo do pedido de exoneração/demissão/dispensa.</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><span class="tag cond">Nunca teve registro em carteira</span><div class="item-label">2.10 — Declaração de que não possui registro de emprego</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">2.11 — Comprovante de regularidade do CPF junto à Receita Federal</div><div class="item-note">Emitir em <a href="https://servicos.receita.fazenda.gov.br/Servicos/CPF/ConsultaSituacao/ConsultaPublica.asp" target="_blank" rel="noopener">servicos.receita.fazenda.gov.br</a></div></div>
+    </div>
+
+    <div class="note alert">
+      Assinar todas as declarações que tiverem campo de assinatura — sem assinatura, a declaração fica pendente. A ordem dos campos no GPI pode não seguir esta numeração; siga esta lista como referência de obrigatoriedade.
+    </div>
+  </section>
+
+  <!-- DADOS BANCÁRIOS -->
+  <section>
+    <div class="sec-head"><span class="sec-num">III-c</span><span class="sec-title">Dados bancários (Banco do Brasil)</span></div>
+    <div class="sec-rule"></div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><span class="tag cond">Se já possui conta no BB</span><div class="item-label">Informar dados bancários no GPI e anexar comprovante (extrato ou contrato)</div><div class="item-note">Não pode ser conta conjunta, conta salário ou conta digital.</div></div>
+    </div>
+
+    <div class="note">
+      Sem conta no Banco do Brasil? Após a perícia médica, a Divisão de Administração de Pessoal fornece declaração para abertura de conta — é condição obrigatória para expedição do título de nomeação. Depois de aberta, enviar o comprovante para <a href="mailto:dap.nucleocadastro@gmail.com">dap.nucleocadastro@gmail.com</a>.
+    </div>
+  </section>
+
+  <!-- IV — EXAMES -->
+  <section>
+    <div class="sec-head"><span class="sec-num">IV</span><span class="sec-title">Exames admissionais</span></div>
+    <p class="sec-desc">Providenciar às próprias expensas; entregar fisicamente no dia da perícia (não são anexados no GPI).</p>
+    <div class="sec-rule"></div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">Tipagem sanguínea e fator RH</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">Hemograma completo, TAP, creatinina, TSH, triglicérides, colesterol total e frações, glicemia de jejum, TGO, TGP, Gama GT, ácido úrico, urina tipo I</div><div class="item-note">Validade: 3 meses.</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><span class="tag cond">Homens ≥ 40 anos</span><div class="item-label">PSA total e livre</div><div class="item-note">Validade: 12 meses.</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><span class="tag cond">Idade ≥ 40 anos</span><div class="item-label">Eletrocardiograma (ECG) com laudo</div><div class="item-note">Validade: 6 meses.</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">Radiografia de tórax P.A. e Perfil, com laudo</div><div class="item-note">Validade: 6 meses.</div></div>
+    </div>
+
+    <div class="item"><div class="checkbox" role="checkbox" tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="item-body"><div class="item-label">Radiografia extraoral panorâmica, com laudo</div><div class="item-note">Anexar a imagem radiográfica. Validade: 3 meses.</div></div>
+    </div>
+
+    <div class="note">
+      Gestantes: apresentar atestado do obstetra ou exame Beta HCG — dispensa dos exames de radiografia. Contraindicação a algum exame: anexar relatório médico/odontológico justificando. A validade de todos os exames conta retroativamente à data da primeira publicação deste Comunicado. Exigidos também para candidatos com deficiência.
+    </div>
+  </section>
+
+  <!-- V — CARTEIRA DE IDENTIDADE -->
+  <section>
+    <div class="sec-head"><span class="sec-num">V</span><span class="sec-title">Expedição da carteira de identidade</span></div>
+    <div class="sec-rule"></div>
+
+    <div class="note">
+      Sem identificação civil no IIRGD, ou com RG de SP emitido antes de 2015 (sem CIN de SP): apresentar original da certidão de nascimento/casamento + cópia, no Posto de Identificação do IIRGD (mesmo endereço da Seção I), <strong>após</strong> a perícia médica. 1ª via é gratuita; 2ª via pode ter taxa.
+    </div>
+    <div class="note">
+      Já possui CIN emitida em SP e RG anterior a 2015? Não precisa comparecer ao IIRGD. RG emitido em outro estado (mesmo com CIN de fora de SP)? Precisa comparecer para registro dos dados.
+    </div>
+  </section>
+
+  <!-- VI — DISPOSIÇÕES -->
+  <section>
+    <div class="sec-head"><span class="sec-num">VI</span><span class="sec-title">Disposições gerais</span></div>
+    <div class="sec-rule"></div>
+
+    <div class="note alert">
+      Descumprir exigências até a posse, ou apresentar falsidade documental, cancela a inscrição e anula todos os atos decorrentes — mesmo após homologação e nomeação.
+    </div>
+    <div class="note">
+      A conferência é 100% remota pelo Sistema GPI — não é preciso comparecer ao setor só para entregar documentos. Pendências são notificadas por e-mail e, eventualmente, telefone, até a véspera da posse. Sem notificação de pendência até lá e apto na perícia = apto para a posse.
+    </div>
+    <div class="note address">
+      Precisa da declaração para abrir conta no Banco do Brasil? Após a perícia médica, comparecer à Divisão de Administração de Pessoal do DAP — Rua Brigadeiro Tobias, 527, 13º andar, Bairro da Luz, São Paulo – Capital.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Checklist de apoio construído a partir do Comunicado de Convocação. Confira sempre o texto oficial publicado no Diário Oficial do Estado.</p>
+  <button class="reset-btn" id="resetBtn">Reiniciar meu checklist</button>
+</footer>
+</div>
+
+<script type="module">
+  // ============================================================
+  // CONFIGURAÇÃO DO FIREBASE — cole aqui as credenciais do SEU
+  // projeto (Firebase Console > Configurações do projeto > seus apps > SDK).
+  // ============================================================
+  const firebaseConfig = {
+  apiKey: "AIzaSyDTNVjeLxThKew_1SbOGY5_ivPD5GRJhlg",
+  authDomain: "checklist-documentos-ip-2026.firebaseapp.com",
+  projectId: "checklist-documentos-ip-2026",
+  storageBucket: "checklist-documentos-ip-2026.firebasestorage.app",
+  messagingSenderId: "967588200820",
+  appId: "1:967588200820:web:e9cf9e6079dc06deccec21",
+  measurementId: "G-KNJWV19LB2"
+};
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const items = Array.from(document.querySelectorAll('.item'));
+  const fill = document.getElementById('progressFill');
+  const text = document.getElementById('progressText');
+  const saveIndicator = document.getElementById('saveIndicator');
+
+  const loginGate = document.getElementById('loginGate');
+  const inscricaoInput = document.getElementById('inscricao');
+  const cpfInput = document.getElementById('cpf');
+  const loginBtn = document.getElementById('loginBtn');
+  const loginError = document.getElementById('loginError');
+  const userLabel = document.getElementById('userInscricaoLabel');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  const SESSION_KEY = 'checklist-session';
+
+  function onlyDigits(v){ return (v || '').replace(/\D/g, ''); }
+
+  function docId(inscricao, cpf){
+    return inscricao + '_' + cpf;
+  }
+
+  function idFor(item, index){
+    return item.dataset.id || (item.dataset.id = 'item-' + index);
+  }
+  items.forEach((item, index) => idFor(item, index));
+
+  function updateProgress(){
+    const total = items.length;
+    const done = items.filter(i => i.classList.contains('checked')).length;
+    const pct = total ? Math.round((done/total)*100) : 0;
+    fill.style.width = pct + '%';
+    text.textContent = done + ' / ' + total + ' concluídos';
+  }
+
+  function flashSaved(){
+    saveIndicator.classList.add('show');
+    clearTimeout(flashSaved._t);
+    flashSaved._t = setTimeout(() => saveIndicator.classList.remove('show'), 1200);
+  }
+
+  let currentInscricao = null;
+  let currentCpf = null;
+  let currentState = {};
+  let bound = false;
+
+  async function loadProgress(inscricao, cpf){
+    try{
+      const ref = doc(db, 'progresso', docId(inscricao, cpf));
+      const snap = await getDoc(ref);
+      if(!snap.exists()) return {};
+      const data = snap.data();
+      return data.items || {};
+    }catch(e){ console.error('Erro ao carregar progresso:', e); return {}; }
+  }
+
+  async function saveProgress(){
+    if(!currentInscricao) return;
+    try{
+      const ref = doc(db, 'progresso', docId(currentInscricao, currentCpf));
+      await setDoc(ref, {
+        inscricao: currentInscricao,
+        items: currentState,
+        updatedAt: new Date().toISOString()
+      });
+      flashSaved();
+    }catch(e){ console.error('Erro ao salvar progresso:', e); }
+  }
+
+  function rememberSession(inscricao, cpf){
+    try{ localStorage.setItem(SESSION_KEY, JSON.stringify({inscricao, cpf})); }catch(e){}
+  }
+  function forgetSession(){
+    try{ localStorage.removeItem(SESSION_KEY); }catch(e){}
+  }
+  function getSession(){
+    try{
+      const raw = localStorage.getItem(SESSION_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }catch(e){ return null; }
+  }
+
+  function bindItemEvents(){
+    if(bound) return;
+    bound = true;
+    items.forEach((item) => {
+      const id = item.dataset.id;
+      const box = item.querySelector('.checkbox');
+      function toggle(){
+        const isChecked = item.classList.toggle('checked');
+        box.setAttribute('aria-checked', isChecked ? 'true':'false');
+        currentState[id] = isChecked;
+        updateProgress();
+        saveProgress();
+      }
+      box.addEventListener('click', toggle);
+      box.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+      });
+    });
+  }
+
+  function applyStateToItems(){
+    items.forEach((item) => {
+      const id = item.dataset.id;
+      const box = item.querySelector('.checkbox');
+      const checked = !!currentState[id];
+      item.classList.toggle('checked', checked);
+      box.setAttribute('aria-checked', checked ? 'true':'false');
+    });
+    updateProgress();
+  }
+
+  async function enterApp(inscricao, cpf){
+    currentInscricao = inscricao;
+    currentCpf = cpf;
+    currentState = await loadProgress(inscricao, cpf);
+    userLabel.textContent = inscricao;
+    applyStateToItems();
+    bindItemEvents();
+    loginGate.style.display = 'none';
+  }
+
+  loginBtn.addEventListener('click', async () => {
+    const inscricao = onlyDigits(inscricaoInput.value);
+    const cpf = onlyDigits(cpfInput.value);
+    loginError.textContent = '';
+    if(inscricao.length < 3){
+      loginError.textContent = 'Informe um número de inscrição válido.';
+      return;
+    }
+    if(cpf.length !== 11){
+      loginError.textContent = 'CPF deve ter 11 dígitos.';
+      return;
+    }
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Entrando...';
+    await rememberSession(inscricao, cpf);
+    await enterApp(inscricao, cpf);
+    loginBtn.disabled = false;
+    loginBtn.textContent = 'Entrar';
+  });
+
+  [inscricaoInput, cpfInput].forEach(inp => {
+    inp.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter') loginBtn.click();
+    });
+  });
+
+  logoutBtn.addEventListener('click', async () => {
+    await forgetSession();
+    currentInscricao = null;
+    currentCpf = null;
+    currentState = {};
+    inscricaoInput.value = '';
+    cpfInput.value = '';
+    userLabel.textContent = '—';
+    loginGate.style.display = 'flex';
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if(!confirm('Reiniciar todo o seu checklist?')) return;
+    items.forEach((item) => {
+      const id = item.dataset.id;
+      item.classList.remove('checked');
+      item.querySelector('.checkbox').setAttribute('aria-checked','false');
+      currentState[id] = false;
+    });
+    updateProgress();
+    saveProgress();
+  });
+
+  // Countdown to 13/07/2026
+  const deadline = new Date('2026-07-13T23:59:59-03:00');
+  const cdEl = document.getElementById('countdown');
+  function renderCountdown(){
+    const now = new Date();
+    const diffMs = deadline - now;
+    if(diffMs <= 0){
+      cdEl.innerHTML = 'prazo<br><strong>encerrado</strong>';
+      return;
+    }
+    const days = Math.floor(diffMs / (1000*60*60*24));
+    cdEl.innerHTML = 'faltam<br><strong>' + days + ' dia' + (days===1?'':'s') + '</strong>';
+  }
+  renderCountdown();
+
+  // Try auto-login from remembered session
+  (async function tryAutoLogin(){
+    const session = await getSession();
+    if(session && session.inscricao && session.cpf){
+      inscricaoInput.value = session.inscricao;
+      cpfInput.value = session.cpf;
+      await enterApp(session.inscricao, session.cpf);
+    }
+  })();
+</script>
+
+</body>
+</html>
